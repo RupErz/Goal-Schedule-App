@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { TextInput, Button, View, StyleSheet } from 'react-native'
+import { TextInput, Button, View, StyleSheet, Alert } from 'react-native'
 
 const GoalInput = (props) => {
     const [enteredGoalText, setEnteredGoalText] = useState('');
+
     const goalInputHandler = (enteredText) => {
         // console.log(enteredText);
         setEnteredGoalText(enteredText);
@@ -10,9 +11,14 @@ const GoalInput = (props) => {
 
     // This is not overwrite, we use this to pass 'enteredGoalText' into Parent component.
     const addGoalHandler = () => {
-        props.addGoalHandler(enteredGoalText);
-        setEnteredGoalText(''); // Clear the input field after adding the goal.
+        if (enteredGoalText.trim().length === 0) {
+            Alert.alert('Invalid Input', 'Course goal cannot be empty', [{text: 'Okay'}]);
+        } else {
+            props.addGoalHandler(enteredGoalText);
+            setEnteredGoalText(''); // Clear the input field after adding the goal.
+        }
     };
+
     return (
         <View style = {styles.inputContainer}>
             <TextInput 
