@@ -5,6 +5,11 @@ import GoalInput from './components/GoalInput';
 
 export default function App() {
   const [courseGoals, setCourseGoals] = useState([]);
+  const [modalIsVisible, setModalIsVisible] = useState(false);
+
+  const startAtGoalHandler = () => {
+    setModalIsVisible(true);
+  }
 
   const addGoalHandler = (enteredGoalText) => {
     console.log(enteredGoalText);
@@ -23,29 +28,33 @@ export default function App() {
   };
   return (
     <View style = {styles.appContainer}>
-        {/* Input area for user to submit */}
-        <GoalInput addGoalHandler={addGoalHandler}/>
+      {/* A button control modal visibility */}
+      <Button title="Add New Goal" color='#5e0acc' onPress={startAtGoalHandler} />
 
-        {/* List of Goals are rendered */}
-        <View style = {styles.goalsContainer}>
-          <FlatList
-            data = {courseGoals}
-            renderItem={(itemData) => { // a fcn tell FlatList how to render the items.
-              // itemData: an object created by FlatList, contains the item being rendered.
-              return (
-                <GoalItem 
-                  text={itemData.item.text} 
-                  onDelete={deleteGoalHandler}
-                  id={itemData.item.id}
-                />
-              );
-            }} 
-            keyExtractor={(item, index) => {
-              return item.id;
-            }}
-          />
+      {/* Input area for user to submit */}
+      { modalIsVisible && <GoalInput visible={modalIsVisible} addGoalHandler={addGoalHandler}/>}
+      
 
-        </View>
+      {/* List of Goals are rendered */}
+      <View style = {styles.goalsContainer}>
+        <FlatList
+          data = {courseGoals}
+          renderItem={(itemData) => { // a fcn tell FlatList how to render the items.
+            // itemData: an object created by FlatList, contains the item being rendered.
+            return (
+              <GoalItem 
+                text={itemData.item.text} 
+                onDelete={deleteGoalHandler}
+                id={itemData.item.id}
+              />
+            );
+          }} 
+          keyExtractor={(item, index) => {
+            return item.id;
+          }}
+        />
+
+      </View>
 
     </View>
   );
