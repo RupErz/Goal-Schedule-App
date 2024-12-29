@@ -11,10 +11,17 @@ export default function App() {
     setModalIsVisible(true);
   }
 
+  const endAddGoalHandler = () => {
+    setModalIsVisible(false);
+  };
+
   const addGoalHandler = (enteredGoalText) => {
     console.log(enteredGoalText);
     // setCourseGoals([...courseGoals, enteredGoalText]); // Spread operator, create a new array .
     setCourseGoals((currentCourseGoals) => [...currentCourseGoals, {text: enteredGoalText, id: Math.random().toString()}]); // This is the correct way to update the state when the new state depends on the old state.
+  
+    // Close the modal after adding the goal.
+    endAddGoalHandler();
   };
 
   const deleteGoalHandler = (id) => {
@@ -32,7 +39,12 @@ export default function App() {
       <Button title="Add New Goal" color='#5e0acc' onPress={startAtGoalHandler} />
 
       {/* Input area for user to submit */}
-      { modalIsVisible && <GoalInput visible={modalIsVisible} addGoalHandler={addGoalHandler}/>}
+      { modalIsVisible && 
+        <GoalInput 
+          visible={modalIsVisible} 
+          addGoalHandler={addGoalHandler}
+          onCancel = {endAddGoalHandler}
+          />}
       
 
       {/* List of Goals are rendered */}
