@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button, FlatList, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import GoalItem from './components/GoalItem';
 import GoalInput from './components/GoalInput';
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
   const [courseGoals, setCourseGoals] = useState([]);
@@ -34,41 +35,46 @@ export default function App() {
     })
   };
   return (
-    <View style = {styles.appContainer}>
-      {/* A button control modal visibility */}
-      <Button title="Add New Goal" color='#5e0acc' onPress={startAtGoalHandler} />
+    <>
+      {/* A component to tune the status bar (zone display Wifi, Battery, Time) */}
+      <StatusBar 
+        style='light'
+      />
 
-      {/* Input area for user to submit */}
-      { modalIsVisible && 
-        <GoalInput 
-          visible={modalIsVisible} 
-          addGoalHandler={addGoalHandler}
-          onCancel = {endAddGoalHandler}
+      <View style = {styles.appContainer}>
+        {/* A button control modal visibility */}
+        <Button title="Add New Goal" color='#a065ec' onPress={startAtGoalHandler} />
+
+        {/* Input area for user to submit */}
+        { modalIsVisible && 
+          <GoalInput 
+            visible={modalIsVisible} 
+            addGoalHandler={addGoalHandler}
+            onCancel = {endAddGoalHandler}
           />}
-      
+        
 
-      {/* List of Goals are rendered */}
-      <View style = {styles.goalsContainer}>
-        <FlatList
-          data = {courseGoals}
-          renderItem={(itemData) => { // a fcn tell FlatList how to render the items.
-            // itemData: an object created by FlatList, contains the item being rendered.
-            return (
-              <GoalItem 
-                text={itemData.item.text} 
-                onDelete={deleteGoalHandler}
-                id={itemData.item.id}
-              />
-            );
-          }} 
-          keyExtractor={(item, index) => {
-            return item.id;
-          }}
-        />
-
+        {/* List of Goals are rendered */}
+        <View style = {styles.goalsContainer}>
+          <FlatList
+            data = {courseGoals}
+            renderItem={(itemData) => { // a fcn tell FlatList how to render the items.
+              // itemData: an object created by FlatList, contains the item being rendered.
+              return (
+                <GoalItem 
+                  text={itemData.item.text} 
+                  onDelete={deleteGoalHandler}
+                  id={itemData.item.id}
+                />
+              );
+            }} 
+            keyExtractor={(item, index) => {
+              return item.id;
+            }}
+          />
+        </View>
       </View>
-
-    </View>
+    </>
   );
 }
 
@@ -77,6 +83,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingHorizontal: 16,
     flex: 1, // Allow the outer container to take full height since it's the only container right now.
+    backgroundColor: "#1e085a",
   },
   goalsContainer: {
     flex: 5,
